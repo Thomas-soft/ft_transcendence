@@ -49,7 +49,7 @@ onUnmounted(() => {
     <div class="title">
       <h1>ft_transcendence</h1>
     </div>
-    <ul>
+    <ul class="ul-nav">
       <li>
         <RouterLink to="/" activeClass="active-link">Home</RouterLink>
       </li>
@@ -57,11 +57,23 @@ onUnmounted(() => {
         <RouterLink to="/credits" activeClass="active-link">Credits</RouterLink>
       </li>
     </ul>
-    <div class="profile">
+    <!-- <div class="profile">
       <ProfileDropDown />
+    </div> -->
+    <div class="forms">
+      <ul>
+          <li>
+            <RouterLink to="/login" activeClass="active-link">Log in</RouterLink>
+          </li>
+          <p>/</p>
+          <li>
+            <RouterLink to="/register" activeClass="active-link">Sign up</RouterLink>
+          </li>
+        </ul>
     </div>
   </nav>
   <nav v-if="isOpen" class="vertical-navigation">
+    <h1>ft_transcendence</h1>
     <ul>
       <li>
         <RouterLink to="/" activeClass="active-link">Home</RouterLink>
@@ -83,6 +95,10 @@ onUnmounted(() => {
     top: 0;
     left: 0;
     width: 100%;
+    .menu-burger, .title, .ul-nav, .profile, .forms
+    {
+      margin-top: 5px;
+    }
     .menu-burger
     {
       display: none;
@@ -97,7 +113,7 @@ onUnmounted(() => {
       }
       flex: 1;
     }
-    ul
+    .ul-nav
     {
       @include flex(space-between, center);
       li
@@ -121,6 +137,42 @@ onUnmounted(() => {
       margin-right: 12px;
       flex: 1;
       text-align: right;
+      ul
+      {
+        @include flex();
+        li
+        {
+          a
+          {
+            display: block;
+          }
+        }
+      }
+    }
+    .forms
+    {
+      margin-right: 12px;
+      flex: 1;
+      @include flex();
+      justify-content: end;
+      ul
+      {
+        @include flex();
+        margin-right: 12px;
+        p
+        {
+          margin: 0 5px;
+        }
+        li
+        {
+          a
+          {
+            display: block;
+            margin: 0;
+            padding: 5px;
+          }
+        }
+      }
     }
   }
   .vertical-navigation
@@ -150,7 +202,7 @@ onUnmounted(() => {
           }
         }
       }
-      .menu-burger, .profile
+      .menu-burger, .profile, .forms
       {
         flex: 1;
       }
@@ -163,7 +215,7 @@ onUnmounted(() => {
       {
         display: block;
       }
-      ul
+      .title, .ul-nav
       {
         display: none;
       }
@@ -179,6 +231,10 @@ onUnmounted(() => {
     background-color: $grey;
     text-align: left;
     padding: 20px;
+    h1
+    {
+      font-size: 1em;
+    }
     ul
     {
       li

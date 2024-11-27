@@ -74,7 +74,7 @@ body
 {
   margin: 0;
   padding: 0;
-  // box-sizing: border-box
+  box-sizing: border-box
 }
 
 #app
@@ -91,6 +91,7 @@ body
 .contain
 {
   height: 100%;
+  width: 100%;
   @include flex();
 }
 
@@ -153,4 +154,48 @@ ul
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+form
+{
+  width: 100%;
+  margin: 0 20px;
+  max-width: 400px;
+  input
+  {
+    width: 100%;
+    padding: 7px;
+    border-radius: 5px;
+    color: $white;
+    background-color: $grey;
+    font-size: 1em;
+    transition: 0.3s ease-out;
+    border: none;
+    outline: 1px solid transparent;
+    &:focus
+    {
+      outline: 1px solid $red;
+      border-radius: 7px;
+    }
+  }
+  .form-info
+  {
+    margin: 15px 0;
+    display: flex;
+    flex-direction: column;
+  }
+  label
+  {
+    font-size: 1em;
+  }
+  .form-error
+  {
+    font-size: 0.8em;
+    color: red;
+    transition: 0.1s ease-out;
+  }
+  button
+  {
+    @include btn2(block);
+  }
 }
