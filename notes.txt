@@ -1,0 +1,5 @@
+npm create vite@latest frontend --template vue-ts
+cd frontend
+npm install
+npm install -D sass
+npm run dev -- --host
