@@ -10,102 +10,6 @@
             <li>
                 <router-link to="/contact">Credits</router-link>
             </li>
-            <!-- <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li>
-            <li>
-                <router-link to="/about">About</router-link>
-            </li>
-            <li>
-                <router-link to="/contact">Credits</router-link>
-            </li> -->
         </ul>
     </nav>
 </template>
@@ -118,11 +22,7 @@
         {
             a
             {
-                display: block;
-                border-top: 1px solid $red;
-                border-color: $red;
-                margin: 20px 0;
-                padding: 0.8em 2.5em;
+                @include btn2(block);
             }
             li:not(:last-child)
             {

@@ -139,12 +139,8 @@ onUnmounted(() => {
         margin-left: 12px;
         .menu-buerger-button
         {
-          transform: none;
-          display: flex;
+          @include btn3(flex);
           flex-direction: column;
-          box-shadow: none;
-          border: none;
-          padding: 5px;
           span
           {
             background-color: $red;
@@ -165,7 +161,7 @@ onUnmounted(() => {
       }
       .menu-burger
       {
-        display: block; /* Afficher le menu burger */
+        display: block;
       }
       ul
       {

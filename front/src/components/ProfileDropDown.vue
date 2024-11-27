@@ -40,7 +40,7 @@ const toggleMenu = () => {
 
 <template>
     <button @click="toggleMenu" class="profile-button">
-      <img src="../pp.jpg" alt="Profile photo" loading="lazy">
+      <img src="../assets/pp.jpg" alt="Profile photo" loading="lazy">
     </button>
     <div v-if="isOpen" class="dropdown-menu">
         <h3>Tom's</h3>
@@ -67,9 +67,8 @@ const toggleMenu = () => {
     @use '../style.scss' as *;
     .profile-button
     {
-        border: none;
+        @include btn3(inline-block);
         padding: 0;
-        box-shadow: none;
         width: 50px;
         height: 50px;
         border-radius: 50%;
@@ -101,14 +100,6 @@ const toggleMenu = () => {
         {
             ul
             {
-                // li
-                // {
-                //     a
-                //     {
-                //         display: block;
-                //         margin: 20px 0px;
-                //     }
-                // }
                 li:not(:last-child)
                 {
                     a
