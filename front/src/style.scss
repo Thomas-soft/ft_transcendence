@@ -1,5 +1,6 @@
 $white: #F0F5FF;
-$red: #FF6F61;
+// $red: #FF6F61;
+$red: #5e6bf6;
 $grey: #2C2F36;
 $black: #191B21;
 
@@ -37,6 +38,20 @@ $black: #191B21;
   box-shadow: none;
   padding: 7px;
   cursor: pointer;
+}
+
+@mixin btn4()
+{
+  margin: 0;
+  padding: 10px;
+  box-shadow: none;
+  border: none;
+  background-color: transparent;
+  color: $red;
+  &:hover
+  {
+    transform: scale(1.1);
+  }
 }
 
 html, body

@@ -32,10 +32,13 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://localhost:8000",
+    # "http://localhost:5173",
+    # "http://localhost:8000",
+    "https://localhost/",
+    "https://localhost:5173",
+    "https://localhost:8000",
 ]
-
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 
 
