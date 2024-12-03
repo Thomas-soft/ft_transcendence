@@ -50,15 +50,32 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 class CustomTokenRefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
         try:
+            # Vérifier la présence du refresh token dans les cookies
             refresh_token = request.COOKIES.get('refresh_token')
             if not refresh_token:
                 return Response({"refreshed": False, "error": "No refresh token provided."})
+
+            print(f"Refresh token received: {refresh_token}")
             
+            # Injecter le refresh token dans les données de la requête
             request.data['refresh'] = refresh_token
-            response = super().post(request, *args, **kwargs)
+
+            # Appeler la méthode parent pour rafraîchir le token
+            try:
+                response = super().post(request, *args, **kwargs)
+                print(f"Super post response: {response.data}")
+            except Exception as e:
+                print(f"Error during token refresh: {str(e)}")
+                return Response({"success": False, "error": "Token refresh failed."})
+
+            # Vérifier si la réponse contient un access token
             tokens = response.data
+            if 'access' not in tokens:
+                return Response({"success": False, "error": "Access token not found in response."})
+
             access_token = tokens['access']
-            
+
+            # Configurer la réponse et ajouter le cookie
             res = Response({"success": True})
             res.set_cookie(
                 key="access_token",
@@ -69,7 +86,9 @@ class CustomTokenRefreshView(TokenRefreshView):
                 path='/'
             )
             return res
+
         except Exception as e:
+            print(f"Unexpected error: {str(e)}")
             return Response({"success": False, "error": str(e)})
 
 @api_view(['POST'])

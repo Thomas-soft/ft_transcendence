@@ -1,40 +1,43 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import ProfileDropDown from './ProfileDropDown.vue'
-import { ref } from 'vue';
-import { onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
+import { useAuthStore } from '../store/auth';
 
-const isOpen = ref(false);
+const isOpen = ref<boolean>(false)
+const authStore = useAuthStore()
 
-const toggleMenu = () => {
+function toggleMenu(): void {
   isOpen.value = !isOpen.value
 }
 
 // Fermer le menu lorsqu'on clique à l'extérieur
 const closeOnClickOutside = (event: MouseEvent) =>
 {
-  const dropdown = document.querySelector('.vertical-navigation');
-  const button = document.querySelector('.menu-buerger-button'); // Sélection du bouton
-  if (
+  const dropdown = document.querySelector('.vertical-navigation')
+  const button = document.querySelector('.menu-buerger-button')
+  if
+  (
     dropdown &&
     button &&
     !dropdown.contains(event.target as Node) &&
     !button.contains(event.target as Node) // Vérifie aussi le bouton
   )
   {
-    isOpen.value = false;
+    isOpen.value = false
   }
-};
+}
 
 // Ajouter l'écouteur global
 onMounted(() => {
   document.addEventListener('click', closeOnClickOutside);
-});
+})
 
 // Retirer l'écouteur au démontage
 onUnmounted(() => {
   document.removeEventListener('click', closeOnClickOutside);
-});
+})
 </script>
 
 <template>
@@ -57,10 +60,10 @@ onUnmounted(() => {
         <RouterLink to="/credits" activeClass="active-link">Credits</RouterLink>
       </li>
     </ul>
-    <!-- <div class="profile">
+    <div v-if="authStore.is_authenticated" class="profile">
       <ProfileDropDown />
-    </div> -->
-    <div class="forms">
+    </div>
+    <div v-else class="forms">
       <ul>
           <li>
             <RouterLink to="/login" activeClass="active-link">Log in</RouterLink>

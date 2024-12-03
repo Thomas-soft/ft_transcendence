@@ -29,20 +29,59 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-secret-key-for-local')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-CORS_ALLOWED_ORIGINS = [
-    "https://localhost",
-    "https://localhost:5173",
-    "https://localhost:8000",
+ALLOWED_HOSTS = [
+    'localhost',
+    '192.1.168.179',
+    '0.0.0.0',
+    '*',
 ]
-CORS_ALLOW_ALL_ORIGINS = False
+
+# CORS_ALLOWED_ORIGINS = [
+#     "https://localhost",
+#     "https://localhost:5173",
+#     "https://localhost:8000",
+# ]
+CORS_ALLOWED_ORIGINS = [
+    "http://192.1.168.179",
+    "https://192.168.1.179",
+    "https://localhost",
+    "http://localhost",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+]
+CORS_ALLOW_ALL_ORIGINS = True  # En développement uniquement
 CORS_ALLOW_CREDENTIALS = True
+# Reconnaître les requêtes HTTPS à travers Nginx
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = False
+# CSRF_COOKIE_SECURE = False
+# SESSION_COOKIE_SECURE = False
+
+CSRF_ALLOW_ALL_HEADERS = True
+CSRF_ALLOW_ALL_ORIGINS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Assurez-vous que ces paramètres sont correctement configurés
+CSRF_COOKIE_SECURE = True  # Utilisez True si vous êtes en HTTPS, False sinon
+SESSION_COOKIE_SECURE = True  # Si HTTPS est activé
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = 'Lax'  # Peut être 'Strict', 'Lax', ou 'None' (pour des cookies accessibles en cross-site)
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+# CSRF_ALLOW_ALL_HEADERS = True
+# CSRF_ALLOW_ALL_ORIGINS = True
+# CSRF_COOKIE_SECURE = True  # Utilisez True si vous êtes en HTTPS, False sinon
+# SESSION_COOKIE_SECURE = True  # Si HTTPS est activé
+# CSRF_COOKIE_HTTPONLY = False
+# CSRF_COOKIE_SAMESITE = 'None'  # Peut être 'Strict', 'Lax', ou 'None' (pour des cookies accessibles en cross-site)
+# SESSION_COOKIE_SAMESITE = 'None'  # Peut être 'Strict', 'Lax', ou 'None' (pour des cookies accessibles en cross-site)
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,8 +92,21 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'accounts',
+    'chat',
     'authentification',
 ]
+
+ASGI_APPLICATION = 'back.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],  
+        },
+    },
+}
+
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -84,6 +136,14 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+# SIMPLE_JWT = {
+#     'AUTH_COOKIE': 'access_token',  # Nom du cookie JWT
+#     'AUTH_COOKIE_SECURE': True,    # En production, assure-toi d'activer cette option
+#     'AUTH_COOKIE_HTTP_ONLY': True, # Empêche l'accès depuis JavaScript
+#     'AUTH_COOKIE_PATH': '/',       # Chemin de validité du cookie
+#     'AUTH_COOKIE_SAMESITE': 'Lax', # Protection contre les attaques CSRF
+# }
 
 ROOT_URLCONF = 'back.urls'
 

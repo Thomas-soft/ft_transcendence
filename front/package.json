@@ -14,11 +14,13 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
+    "axios": "^1.7.8",
+    "pinia": "^2.2.8",
     "rollup": "^4.27.4",
     "sass": "^1.81.0",
-    "typescript": "^5.7.2",
     "vite": "^6.0.1",
-    "vue-tsc": "^2.1.8"
+    "vue-tsc": "^2.1.8",
+    "wscat": "^6.0.1"
   },
   "resolutions": {
     "@rollup/rollup-linux-arm64-gnu": "latest"

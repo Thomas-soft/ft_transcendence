@@ -7,7 +7,6 @@ WORKDIR /app
 COPY front/package.json ./ front/vite.config.ts ./ front/tsconfig.*.json ./
 
 RUN npm install -g npm@latest && npm install
-RUN npm install
 
 # Copier le code de l'application
 COPY front/ .

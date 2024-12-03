@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
-// import OnlineFriends from './OnlineFriends.vue';
-// import FriendRequests from './FriendRequests.vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { useSelfStore } from '../store/self';
 
 // État d'ouverture/fermeture du menu
-const isOpen = ref(false);
+const isOpen = ref<boolean>(false)
+const selfStore = useSelfStore()
+// const photo = selfStore.user_data ? selfStore.user_data.photo : ''
+const photoUrl = computed(() => `https://localhost/api/accounts${selfStore.user_data?.photo}`); // Utilisation de la propriété calculée
 
 // Fermer le menu lorsqu'on clique à l'extérieur
 const closeOnClickOutside = (event: MouseEvent) =>
 {
-    const dropdown = document.querySelector('.dropdown-menu');
-    const button = document.querySelector('.profile-button'); // Sélection du bouton
+    const dropdown: HTMLElement | null = document.querySelector('.dropdown-menu')
+    const button: HTMLElement | null = document.querySelector('.profile-button') // Sélection du bouton
     if (
         dropdown &&
         button &&
@@ -18,29 +20,29 @@ const closeOnClickOutside = (event: MouseEvent) =>
         !button.contains(event.target as Node) // Vérifie aussi le bouton
     )
     {
-        isOpen.value = false;
+        isOpen.value = false
     }
 };
 
 // Ajouter l'écouteur global
 onMounted(() => {
-  document.addEventListener('click', closeOnClickOutside);
-});
+  document.addEventListener('click', closeOnClickOutside)
+})
 
 // Retirer l'écouteur au démontage
 onUnmounted(() => {
-  document.removeEventListener('click', closeOnClickOutside);
-});
+  document.removeEventListener('click', closeOnClickOutside)
+})
 
 // Basculer l'état du menu
 const toggleMenu = () => {
-  isOpen.value = !isOpen.value;
-};
+  isOpen.value = !isOpen.value
+}
 </script>
 
 <template>
     <button @click="toggleMenu" class="profile-button">
-      <img src="../assets/pp.jpg" alt="Profile photo" loading="lazy">
+        <img v-if="selfStore.user_data?.photo" :src="photoUrl" alt="Profile photo" loading="lazy">
     </button>
     <div v-if="isOpen" class="dropdown-menu">
         <h3>Tom's</h3>

@@ -23,7 +23,7 @@ fclean:
 
 # Reconstruction des conteneurs après des modifications
 rebuild:
-	$(DC_CMD) up --build
+	$(DC_CMD) up --build -d
 
 # Tout construire et lancer les services
 all: fclean rebuild
