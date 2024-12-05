@@ -1,8 +1,10 @@
 <script setup>
 import { computed, onMounted } from 'vue';
 import { useAccountsStore } from '../stores/accounts'
+import { useRouter } from 'vue-router';
 
 const accountsStore = useAccountsStore()
+const router = useRouter()
 
 onMounted(async () =>
 {
@@ -29,7 +31,7 @@ const friends = computed(() =>
 
 const handleViewProfile = (user) =>
 {
-    console.log(user)
+    router.push(`/profile/${user}`)
 }
 
 const handleSendFriendAction = async (id, action) =>

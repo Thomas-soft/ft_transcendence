@@ -23,7 +23,6 @@ export const useAccountsStore = defineStore('accounts',
             async send_friend_action(id, action)
             {
                 const response = await sendFriendAction(id, action)
-                console.log(response.success)
                 if (!response?.success)
                     return
                     const userIndex = this.accounts.findIndex(account => account.id === id)

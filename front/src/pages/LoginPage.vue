@@ -3,9 +3,11 @@ import { ref } from 'vue';
 import { login } from '../endpoints/api';
 import { useRouter } from 'vue-router';
 import { getDataOnLogin } from '../utils/utils';
+import { useAuthStore } from '../stores/auth';
 
 const showPassword = ref(false)
 const router = useRouter()
+const authStore = useAuthStore()
 
 const togglePassword = () =>
 {
@@ -24,18 +26,21 @@ const handleLogin = async (e) =>
     const password = data.get("password")
     const error = document.getElementById('login-error')
 
-    const response = await login(username, password)
-    if (response.success)
+    // const response = await login(username, password)
+    // if (response.success)
+    // {
+    //     await getDataOnLogin()
+    //     router.push("/")
+    // }
+    const response = await authStore.login_user(username, password)
+    if (response)
     {
-        await getDataOnLogin()
         router.push("/")
+        return
     }
-    else
-    {
-        if (!error)
-            return
-        error.style.opacity = '1'
-    }
+    if (!error)
+        return
+    error.style.opacity = '1'
 }
 </script>
 
@@ -49,7 +54,7 @@ const handleLogin = async (e) =>
         <label for="password">Password</label>
         <div class="field">
             <input type="password" id="password" name="password" autocomplete="new-password" required />
-            <button class="fa-solid fa-eye" type="button" @click="togglePassword"></button>
+            <button class="fa-solid fa-eye" type="button" @click="togglePassword" tabindex="-1"></button>
         </div>
         <p class="form-error" id="login-error">Wrong username or password.</p>
     </div>

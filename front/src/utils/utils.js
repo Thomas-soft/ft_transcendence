@@ -12,14 +12,14 @@ export const getDataOnLogin = async () =>
         await selfStore.get_user_data()
 }
 
-export const removeDataOnLogout = async () =>
+export const removeDataOnLogout = async (disconnect = true) =>
 {
     const authStore = useAuthStore()
     const selfStore = useSelfStore()
     const accountsStore = useAccountsStore()
 
-    authStore.logout()
     selfStore.clear()
     accountsStore.clear()
-
+    if (disconnect)
+        await authStore.logout()
 }

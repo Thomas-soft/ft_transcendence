@@ -5,12 +5,14 @@ import { deleteUser, logout } from '../endpoints/api'
 import { removeDataOnLogout } from '../utils/utils'
 import { useSelfStore } from '../stores/self'
 import { useAccountsStore } from '../stores/accounts'
+import { useAuthStore } from '../stores/auth'
 
 const route = useRoute()
 const router = useRouter()
 const param = route.params.username
 const selfStore = useSelfStore()
 const accountsStore = useAccountsStore()
+const authStore = useAuthStore()
 
 // URL de la photo pour l'utilisateur connecté
 const myPhotoUrl = computed(() =>
@@ -43,7 +45,8 @@ const handleLogout = async () =>
 // Gérer la suppression de compte
 const handleDelete = async () =>
 {
-    await removeDataOnLogout()
+    await removeDataOnLogout(false)
+    authStore.is_authenticated = false
     await deleteUser()
     router.push("/")
 }

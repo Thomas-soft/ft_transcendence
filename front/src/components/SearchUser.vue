@@ -1,9 +1,13 @@
 <script setup>
 import { ref } from 'vue'
 import { searchUsers } from '../endpoints/api';
+import { useAccountsStore } from '../stores/accounts';
+import { useRouter } from 'vue-router';
 
 const query = ref('')
 const users = ref()
+const accountsStore = useAccountsStore()
+const router = useRouter()
 const handleInput = async () =>
 {
     if (query.value.length < 3)
@@ -20,7 +24,7 @@ const handleInput = async () =>
 
 const handleViewProfile = (user) =>
 {
-    console.log(user)
+    router.push(`/profile/${user}`)
 }
 
 const handleSendFriendAction = async (id, action) =>
@@ -50,7 +54,16 @@ const handleSendFriendAction = async (id, action) =>
                     </div>
                 </td>
                 <td>{{ user.username }}</td>
-                <td>
+                <td v-if="user.is_pending">
+                    <button @click="handleSendFriendAction(user.id, 'cancel')">Cancel</button>
+                    <button @click="handleSendFriendAction(user.id, 'block')">Block</button>
+                </td>
+                <td v-else-if="user.pending_by">
+                    <button @click="handleSendFriendAction(user.id, 'accpet')">Accept</button>
+                    <button @click="handleSendFriendAction(user.id, 'reject')">Reject</button>
+                    <button @click="handleSendFriendAction(user.id, 'block')">Block</button>
+                </td>
+                <td v-else>
                     <button @click="handleSendFriendAction(user.id, 'add')">Add</button>
                     <button @click="handleSendFriendAction(user.id, 'block')">Block</button>
                 </td>

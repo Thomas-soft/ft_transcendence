@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import { config } from "../config/config.json"
 import { register } from '../endpoints/api'
+import { useAuthStore } from '../stores/auth';
+import { useRouter } from 'vue-router';
 
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
@@ -11,6 +13,8 @@ const password = ref('')
 const confirmPassword = ref('')
 const isGood = ref(false)
 const registerError = ref('')
+const authStore = useAuthStore()
+const router = useRouter()
 
 const togglePassword = () =>
 {
@@ -86,9 +90,9 @@ const handle_register = async (e) =>
     const error = document.getElementById('register-error')
 
     if (email.value.length === 0)
-        response = await register(username.value, undefined, password.value)
+        response = await authStore.register_user(username.value, undefined, password.value)
     else
-        response = await register(username.value, email.value, password.value)
+        response = await authStore.register_user(username.value, email.value, password.value)
     if (!error)
         return
     if (response.success === false)
@@ -100,6 +104,7 @@ const handle_register = async (e) =>
     {
         registerError.value = undefined
         error.style.opacity = '0'
+        router.push("/")
     }
 }
 
@@ -112,16 +117,16 @@ const handle_register = async (e) =>
         <input type="text" id="username" name="username" autocomplete="username" required @change="handleUsername" />
         <p class="form-error" id="username-error">{{ config.regex.username.description }}</p>
     </div>
-    <div class="form-info">
+    <!-- <div class="form-info">
         <label for="email">Email (optional)</label>
         <input type="email" id="email" name="email" @change="handleEmail" />
         <p class="form-error" id="email-error">{{ config.regex.email.description }}</p>
-    </div>
+    </div> -->
     <div class="form-info">
         <label for="password">Password</label>
         <div class="field">
             <input type="password" id="password" name="password" autocomplete="new-password" required @change="handlePassword"/>
-            <button class="fa-solid fa-eye" type="button" @click="togglePassword"></button>
+            <button class="fa-solid fa-eye" type="button" @click="togglePassword" tabindex="-1"></button>
         </div>
         <p class="form-error" id="password-error">{{ config.regex.password.description }}</p>
     </div>
@@ -129,7 +134,7 @@ const handle_register = async (e) =>
         <label for="confirmPassword">Confirm password</label>
         <div class="field">
             <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="new-password" required @change="handleConfirmPassword" />
-            <button class="fa-solid fa-eye" type="button" @click="toggleConfirmPassword"></button>
+            <button class="fa-solid fa-eye" type="button" @click="toggleConfirmPassword" tabindex="-1"></button>
         </div>
         <p class="form-error" id="confirm-password-error">Passwords do not match.</p>
     </div>

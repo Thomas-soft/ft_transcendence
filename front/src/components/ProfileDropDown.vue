@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useSelfStore } from '../stores/self';
+import { removeDataOnLogout } from '../utils/utils';
 
 const isOpen = ref(false)
 const selfStore = useSelfStore()
@@ -47,6 +48,11 @@ const toggleMenu = () =>
 {
   isOpen.value = !isOpen.value
 }
+
+const handleLogout = async () =>
+{
+    await removeDataOnLogout()
+}
 </script>
 
 <template>
@@ -67,7 +73,7 @@ const toggleMenu = () =>
                 <RouterLink to="/friends">Friends</RouterLink>
             </li>
             <li>
-                <RouterLink to="/logout">Log out</RouterLink>
+                <button @click="handleLogout">Logout</button>
             </li>
         </ul>
     </nav>    

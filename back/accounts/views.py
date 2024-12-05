@@ -28,6 +28,11 @@ def register(request):
         return Response({
             "success": True,
         })
+    else:
+        return Response({
+            "success": False,
+            "error": serializer.errors,
+        })
     return Response({"success": False, "error": "Unknown error."})
 
 @api_view(['DELETE'])
