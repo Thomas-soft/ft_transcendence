@@ -1,120 +1,130 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue';
-import { useSelfStore } from '../store/self';
+import { useSelfStore } from '../stores/self';
 
-// État d'ouverture/fermeture du menu
-const isOpen = ref<boolean>(false)
+const isOpen = ref(false)
 const selfStore = useSelfStore()
-// const photo = selfStore.user_data ? selfStore.user_data.photo : ''
-const photoUrl = computed(() => `https://localhost/api/accounts${selfStore.user_data?.photo}`); // Utilisation de la propriété calculée
+const photoUrl = computed(() =>
+{
+  return selfStore.user_data?.photo
+    ? `https://localhost/api/accounts${selfStore.user_data.photo}`
+    : null;
+})
+const username = computed(() =>
+{
+    return selfStore.user_data?.username
+    ? `/profile/${selfStore.user_data?.username}`
+    : null
+})
 
 // Fermer le menu lorsqu'on clique à l'extérieur
-const closeOnClickOutside = (event: MouseEvent) =>
+const closeOnClickOutside = (e) =>
 {
-    const dropdown: HTMLElement | null = document.querySelector('.dropdown-menu')
-    const button: HTMLElement | null = document.querySelector('.profile-button') // Sélection du bouton
+    const dropdown = document.querySelector('.dropdown-menu')
+    const button = document.querySelector('.profile-button')
     if (
         dropdown &&
         button &&
-        !dropdown.contains(event.target as Node) &&
-        !button.contains(event.target as Node) // Vérifie aussi le bouton
+        !dropdown.contains(e.target) &&
+        !button.contains(e.target)
     )
     {
         isOpen.value = false
     }
 };
 
-// Ajouter l'écouteur global
-onMounted(() => {
+onMounted(() =>
+{
   document.addEventListener('click', closeOnClickOutside)
 })
 
-// Retirer l'écouteur au démontage
-onUnmounted(() => {
+onUnmounted(() =>
+{
   document.removeEventListener('click', closeOnClickOutside)
 })
 
-// Basculer l'état du menu
-const toggleMenu = () => {
+const toggleMenu = () =>
+{
   isOpen.value = !isOpen.value
 }
 </script>
 
 <template>
-    <button @click="toggleMenu" class="profile-button">
-        <img v-if="selfStore.user_data?.photo" :src="photoUrl" alt="Profile photo" loading="lazy">
-    </button>
-    <div v-if="isOpen" class="dropdown-menu">
-        <h3>Tom's</h3>
-        <nav aria-label="Pagnigation">
-            <ul>
-                <li>
-                    <RouterLink to="/profile">My profile</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/settings">Settings</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/friends">Friends</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/logout">Log out</RouterLink>
-                </li>
-            </ul>
-        </nav>    
-    </div>
+<button @click="toggleMenu" class="profile-button">
+    <img v-if="selfStore.user_data?.photo" :src="photoUrl" alt="Profile photo" loading="lazy">
+</button>
+<div v-if="isOpen" class="dropdown-menu">
+    <h3>{{ selfStore.user_data?.username }}</h3>
+    <nav aria-label="Pagnigation">
+        <ul>
+            <li>
+                <RouterLink :to="username">My profile</RouterLink>
+            </li>
+            <li>
+                <RouterLink to="/settings">Settings</RouterLink>
+            </li>
+            <li>
+                <RouterLink to="/friends">Friends</RouterLink>
+            </li>
+            <li>
+                <RouterLink to="/logout">Log out</RouterLink>
+            </li>
+        </ul>
+    </nav>    
+</div>
 </template>
 
 <style scoped lang="scss">
-    @use '../style.scss' as *;
-    .profile-button
+@use '../style.scss' as *;
+
+.profile-button
+{
+    @include btn3(inline-block);
+    padding: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    &:hover
     {
-        @include btn3(inline-block);
-        padding: 0;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        &:hover
-        {
-            box-shadow: none;
-            transform: scale(1.042);
-        }
-        img
-        {
-            width: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            object-position: center;
-        }
+        box-shadow: none;
+        transform: scale(1.042);
     }
-    .dropdown-menu
+    img
     {
-        z-index: 1;
-        position: absolute;
-        top: 0px;
-        right: 0;
-        width: 200px;
-        height: 100vh;
-        background-color: $grey;
-        text-align: left;
-        padding: 20px;
-        nav
+        width: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center;
+    }
+}
+.dropdown-menu
+{
+    z-index: 1;
+    position: absolute;
+    top: 0px;
+    right: 0;
+    width: 200px;
+    height: 100vh;
+    background-color: $grey;
+    text-align: left;
+    padding: 20px;
+    nav
+    {
+        ul
         {
-            ul
+            li:not(:last-child)
             {
-                li:not(:last-child)
+                a
                 {
-                    a
-                    {
-                        display: block;
-                        margin: 20px 0px;
-                    }
+                    display: block;
+                    margin: 20px 0px;
                 }
-                li:last-child
-                {
-                    text-align: end;
-                }
+            }
+            li:last-child
+            {
+                text-align: end;
             }
         }
     }
+}
 </style>

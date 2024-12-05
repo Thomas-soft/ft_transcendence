@@ -16,7 +16,7 @@ def register(request):
 
     validation_checks = {
         "Username already exists.": User.objects.filter(username=username).exists(),
-        "Email already exists.": User.objects.filter(email=email).exists() and email != "",
+        "Email already exists.": User.objects.filter(email=email).exists() and email != "" and email is not None,
     }
     for error_message, condition in validation_checks.items():
         if condition:
@@ -56,14 +56,22 @@ def get_data(request):
 @permission_classes([IsAuthenticated])
 def get_profile(request, username):
     user = User.objects.get(username=username)
+    if (user is None):
+        return Response({"success": False, "error": "User not found."})
     me = request.user
     res = {
         "success": True,
         "data":
         {
+            "id": user.id,
             "photo": user.photo.url,
             "username": user.username,
             "email": user.email if user == me else None,
+            "is_friend": user in me.friends.all(),
+            "is_pending": user in me.sent_friend_requests.all(),
+            "pending_by": me in user.sent_friend_requests.all(),
+            "is_blocked": user in me.blocked_users.all(),
+            "blocked_by": me in user.blocked_by.all(),
         }
     }
     return Response(res)

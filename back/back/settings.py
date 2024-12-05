@@ -94,6 +94,7 @@ INSTALLED_APPS = [
     'accounts',
     'chat',
     'authentification',
+    'friends',
 ]
 
 ASGI_APPLICATION = 'back.asgi.application'

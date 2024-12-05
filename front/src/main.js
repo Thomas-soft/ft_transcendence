@@ -6,12 +6,13 @@ import { routes } from './routes'
 import { createPinia } from 'pinia'
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes
+  history: createWebHistory(),
+  routes
 })
 
 const app = createApp(App)
 const pinia = createPinia()
+
 app.use(router)
 app.use(pinia)
 app.mount('#app')

@@ -4,7 +4,7 @@ FROM node:20
 WORKDIR /app
 
 # Copier et installer les dépendances
-COPY front/package.json ./ front/vite.config.ts ./ front/tsconfig.*.json ./
+COPY front/package.json ./ front/vite.config.js ./ front/jsconfig.*.json ./
 
 RUN npm install -g npm@latest && npm install
 

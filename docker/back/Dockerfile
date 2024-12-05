@@ -23,5 +23,5 @@ RUN if [ -n "$DJANGO_SUPERUSER_USERNAME" ] && [ -n "$DJANGO_SUPERUSER_EMAIL" ] &
 
 EXPOSE 8000
 
-# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "back.asgi:application"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "back.asgi:application"]

@@ -1,19 +1,12 @@
 import { defineStore } from 'pinia'
 import { getUserData } from '../endpoints/api'
 import { useAuthStore } from './auth'
-import { UserData } from '../types/UserData'
-
-// Définir le type de l'état
-interface SelfState
-{
-    user_data: UserData | null
-}
 
 export const useSelfStore = defineStore('self',
     {
         state: () =>
         ({
-            user_data: null as UserData | null
+            user_data: undefined
         }),
         actions:
         {
@@ -29,9 +22,7 @@ export const useSelfStore = defineStore('self',
             },
             clear()
             {
-                this.user_data = null
-                console.log('cleared self store')
-                console.log(this.user_data)
+                this.user_data = undefined
             }
         }
     }

@@ -1,30 +1,30 @@
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue';
 import { login } from '../endpoints/api';
 import { useRouter } from 'vue-router';
-import { ApiResponse } from '../types/api';
 import { getDataOnLogin } from '../utils/utils';
 
-const showPassword = ref<boolean>(false)
+const showPassword = ref(false)
 const router = useRouter()
 
-const togglePassword = () => {
+const togglePassword = () =>
+{
     showPassword.value = !showPassword.value
-    const password: HTMLElement | null = document.getElementById('password')
-    if (password instanceof HTMLInputElement)
+    const password = document.getElementById('password')
+    if (password)
         password.type = showPassword.value ? 'text' : 'password'
 }
 
-const handleLogin = async (event: Event) =>
+const handleLogin = async (e) =>
 {
-    event.preventDefault()
-    const form = event.target as HTMLFormElement
+    e.preventDefault()
+    const form = e.target
     const data = new FormData(form)
-    const username: string = data.get("username") as string
-    const password: string = data.get("password") as string
-    const error: HTMLElement | null = document.getElementById('login-error')
+    const username = data.get("username")
+    const password = data.get("password")
+    const error = document.getElementById('login-error')
 
-    const response: ApiResponse = await login(username, password)
+    const response = await login(username, password)
     if (response.success)
     {
         await getDataOnLogin()
@@ -40,21 +40,21 @@ const handleLogin = async (event: Event) =>
 </script>
 
 <template>
-    <form @submit="handleLogin">
-        <div class="form-info">
-            <label for="username">Username / Email</label>
-            <input type="text" id="username" name="username" required />
+<form @submit="handleLogin">
+    <div class="form-info">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" autocomplete="username" required />
+    </div>
+    <div class="form-info">
+        <label for="password">Password</label>
+        <div class="field">
+            <input type="password" id="password" name="password" autocomplete="new-password" required />
+            <button class="fa-solid fa-eye" type="button" @click="togglePassword"></button>
         </div>
-        <div class="form-info">
-            <label for="password">Password</label>
-            <div class="field">
-                <input type="password" id="password" name="password" required />
-                <button class="fa-solid fa-eye" type="button" @click="togglePassword"></button>
-            </div>
-            <p class="form-error" id="login-error">Wrong username or password.</p>
-        </div>
-        <button type="submit">Submit</button>
-    </form>
+        <p class="form-error" id="login-error">Wrong username or password.</p>
+    </div>
+    <button type="submit">Submit</button>
+</form>
 </template>
 
 <style scoped lang="scss">
@@ -66,6 +66,8 @@ const handleLogin = async (event: Event) =>
 }
 form
 {
+    width: 100%;
+    max-width: 500px;
     .form-info
     {
         .field

@@ -1,10 +1,10 @@
-<script setup lang="ts">
+<script setup>
 import { onMounted } from 'vue';
 import Navigation from './components/Navigation.vue'
 import { RouterView } from 'vue-router'
-import { useAuthStore } from './store/auth'
-import { useSelfStore } from './store/self'
-import Chat from './components/Chat.vue';
+import { useAuthStore } from './stores/auth'
+import { useSelfStore } from './stores/self'
+// import Chat from './components/Chat.vue';
 
 const authStore = useAuthStore()
 const selfStore = useSelfStore()
@@ -15,19 +15,21 @@ onMounted(async () =>
   if (!selfStore.user_data)
     await selfStore.get_user_data()
 })
-
 </script>
 
 <template>
-  <Navigation />
-  <!-- <Chat /> -->
-  <div class="container">
-    <div class="contain">
-      <RouterView />
+    <Navigation />
+    <div class="container">
+        <div class="contain">
+            <RouterView />
+        </div>
     </div>
-  </div>
 </template>
 
 <style scoped lang="scss">
-
+@use './style.scss' as *;
+h1
+{
+    color: $red;
+}
 </style>

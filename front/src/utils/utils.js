@@ -1,5 +1,6 @@
-import { useAuthStore } from "../store/auth"
-import { useSelfStore } from "../store/self"
+import { useAuthStore } from "../stores/auth"
+import { useSelfStore } from "../stores/self"
+import { useAccountsStore } from "../stores/accounts"
 
 export const getDataOnLogin = async () =>
 {
@@ -15,7 +16,10 @@ export const removeDataOnLogout = async () =>
 {
     const authStore = useAuthStore()
     const selfStore = useSelfStore()
+    const accountsStore = useAccountsStore()
 
-    await authStore.logout()
+    authStore.logout()
     selfStore.clear()
+    accountsStore.clear()
+
 }

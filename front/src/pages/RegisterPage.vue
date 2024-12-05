@@ -1,36 +1,38 @@
-<script setup lang="ts">
-import { Ref, ref } from 'vue'
+<script setup>
+import { ref } from 'vue'
 import { config } from "../config/config.json"
 import { register } from '../endpoints/api'
-import { ApiResponse } from '../types/api'
 
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
-const username = ref<string>('')
-const email = ref<string>('')
-const password = ref<string>('')
-const confirmPassword = ref<string>('')
-const isGood = ref<boolean>(false)
-const registerError = ref<string | undefined>('')
+const username = ref('')
+const email = ref('')
+const password = ref('')
+const confirmPassword = ref('')
+const isGood = ref(false)
+const registerError = ref('')
 
-const togglePassword = () => {
+const togglePassword = () =>
+{
     showPassword.value = !showPassword.value
-    const password: HTMLElement | null = document.getElementById('password')
-    if (password instanceof HTMLInputElement)
+    const password = document.getElementById('password')
+    if (password)
         password.type = showPassword.value ? 'text' : 'password'
 }
 
-const toggleConfirmPassword = () => {
+const toggleConfirmPassword = () =>
+{
     showConfirmPassword.value = !showConfirmPassword.value
-    const confirmPassword: HTMLElement | null = document.getElementById('confirmPassword')
-    if (confirmPassword instanceof HTMLInputElement)
+    const confirmPassword = document.getElementById('confirmPassword')
+    if (confirmPassword)
         confirmPassword.type = showConfirmPassword.value ? 'text' : 'password'
 }
 
-const handleChange = (event: Event, id: string, element: Ref<string>, pattern: string) =>
+const handleChange = (e, id, element, pattern) =>
 {
-    const error: HTMLElement | null = document.getElementById(id)
-    const target = event.target as HTMLInputElement
+    const error = document.getElementById(id)
+    const target = e.target
+
     element.value = target.value
     if (!error)
         return
@@ -46,26 +48,26 @@ const handleChange = (event: Event, id: string, element: Ref<string>, pattern: s
     }
 }
 
-const handleUsername = (event: Event) =>
+const handleUsername = (e) =>
 {
-    handleChange(event, 'username-error', username, config.regex.username.pattern)
+    handleChange(e, 'username-error', username, config.regex.username.pattern)
 
 }
 
-const handleEmail = (event: Event) =>
+const handleEmail = (e) =>
 {
-    handleChange(event, 'email-error', email, config.regex.email.pattern)
+    handleChange(e, 'email-error', email, config.regex.email.pattern)
 }
 
-const handlePassword = (event: Event) =>
+const handlePassword = (e) =>
 {
-    handleChange(event, 'password-error', password, config.regex.password.pattern)
+    handleChange(e, 'password-error', password, config.regex.password.pattern)
 }
 
-const handleConfirmPassword = (event: Event) =>
+const handleConfirmPassword = (e) =>
 {
-    const error: HTMLElement | null = document.getElementById('confirm-password-error')
-    const target = event.target as HTMLInputElement
+    const error = document.getElementById('confirm-password-error')
+    const target = e.target
     confirmPassword.value = target.value
     if (!error)
         return
@@ -75,16 +77,16 @@ const handleConfirmPassword = (event: Event) =>
         error.style.opacity = '0'
 }
 
-const handle_register = async (e: Event) =>
+const handle_register = async (e) =>
 {
     e.preventDefault()
     // if (!isGood.value)
         // return
-    let response: ApiResponse
-    const error: HTMLElement | null = document.getElementById('register-error')
+    let response
+    const error = document.getElementById('register-error')
 
     if (email.value.length === 0)
-        response = await register(username.value, null, password.value)
+        response = await register(username.value, undefined, password.value)
     else
         response = await register(username.value, email.value, password.value)
     if (!error)
@@ -104,36 +106,36 @@ const handle_register = async (e: Event) =>
 </script>
 
 <template>
-    <form v-on:submit="handle_register">
-        <div class="form-info">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required @change="handleUsername" />
-            <p class="form-error" id="username-error">{{ config.regex.username.description }}</p>
+<form @submit="handle_register">
+    <div class="form-info">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" autocomplete="username" required @change="handleUsername" />
+        <p class="form-error" id="username-error">{{ config.regex.username.description }}</p>
+    </div>
+    <div class="form-info">
+        <label for="email">Email (optional)</label>
+        <input type="email" id="email" name="email" @change="handleEmail" />
+        <p class="form-error" id="email-error">{{ config.regex.email.description }}</p>
+    </div>
+    <div class="form-info">
+        <label for="password">Password</label>
+        <div class="field">
+            <input type="password" id="password" name="password" autocomplete="new-password" required @change="handlePassword"/>
+            <button class="fa-solid fa-eye" type="button" @click="togglePassword"></button>
         </div>
-        <div class="form-info">
-            <label for="email">Email (optional)</label>
-            <input type="email" id="email" name="email" @change="handleEmail" />
-            <p class="form-error" id="email-error">{{ config.regex.email.description }}</p>
+        <p class="form-error" id="password-error">{{ config.regex.password.description }}</p>
+    </div>
+    <div class="form-info">
+        <label for="confirmPassword">Confirm password</label>
+        <div class="field">
+            <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="new-password" required @change="handleConfirmPassword" />
+            <button class="fa-solid fa-eye" type="button" @click="toggleConfirmPassword"></button>
         </div>
-        <div class="form-info">
-            <label for="password">Password</label>
-            <div class="field">
-                <input type="password" id="password" name="password" required @change="handlePassword"/>
-                <button class="fa-solid fa-eye" type="button" @click="togglePassword"></button>
-            </div>
-            <p class="form-error" id="password-error">{{ config.regex.password.description }}</p>
-        </div>
-        <div class="form-info">
-            <label for="confirmPassword">Confirm password</label>
-            <div class="field">
-                <input type="password" id="confirmPassword" name="confirmPassword" required @change="handleConfirmPassword" />
-                <button class="fa-solid fa-eye" type="button" @click="toggleConfirmPassword"></button>
-            </div>
-            <p class="form-error" id="confirm-password-error">Passwords do not match.</p>
-        </div>
-        <p class="form-error" id="register-error">{{ registerError }}</p>
-        <button type="submit">Submit</button>
-    </form>
+        <p class="form-error" id="confirm-password-error">Passwords do not match.</p>
+    </div>
+    <p class="form-error" id="register-error">{{ registerError }}</p>
+    <button type="submit">Submit</button>
+</form>
 </template>
 
 <style scoped lang="scss">
@@ -145,6 +147,8 @@ const handle_register = async (e: Event) =>
 }
 form
 {
+    width: 100%;
+    max-width: 500px;
     .form-info
     {
         .field
