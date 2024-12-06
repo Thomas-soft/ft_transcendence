@@ -5,10 +5,7 @@
 <nav>
     <ul>
         <li>
-            <router-link to="/modes">Play</router-link>
-        </li>
-        <li>
-            <router-link to="/contact">Credits</router-link>
+            <router-link to="/modes/pong">Play 1v1</router-link>
         </li>
     </ul>
 </nav>

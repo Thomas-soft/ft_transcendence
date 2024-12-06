@@ -51,7 +51,7 @@ const handle_activate_2fa = async (e) =>
     </div>
 </template>
 
-<style>
+<style scoped lang="scss">
 @use "../style.scss" as *;
 
 </style>
