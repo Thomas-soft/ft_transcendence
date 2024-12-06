@@ -13,7 +13,8 @@ const api =
         REGISTER: `${ACCOUNT_URL}register/`,
         DELETE: `${ACCOUNT_URL}delete/`,
         DATA: `${ACCOUNT_URL}data/`,
-        PROFILE: `${ACCOUNT_URL}profile/`
+        PROFILE: `${ACCOUNT_URL}profile/`,
+        UPLOAD_PHOTO: `${ACCOUNT_URL}upload_profile_photo/`
     },
     AUTH:
     {
@@ -157,5 +158,12 @@ export const getFriendRequests = async () =>
 {
     return await requestWithTokenRefresh(() =>
         axios.get(api.FRIENDS.REQUESTS, { withCredentials: true }).then(res => res.data)
+    )
+}
+
+export const uploadProfilePhoto = async (data) =>
+{
+    return await requestWithTokenRefresh(() =>
+        axios.put(api.ACCOUNT.UPLOAD_PHOTO, data, { withCredentials: true }).then(res => res.data)
     )
 }

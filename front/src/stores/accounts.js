@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getFriendRequests, getFriends, getProfile, sendFriendAction } from '../endpoints/api'
+import { getFriendRequests, getFriends, getProfile, sendFriendAction, uploadProfilePhoto } from '../endpoints/api'
 
 export const useAccountsStore = defineStore('accounts',
     {

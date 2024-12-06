@@ -80,3 +80,19 @@ def get_profile(request, username):
         }
     }
     return Response(res)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def upload_profile_photo(request):
+    file = request.FILES.get('profile_photo')
+    if not file:
+        return Response({"success": False, 'error': 'No file provided.'})
+    # Vérifiez que le fichier est une image
+    if not file.name.endswith(('.png', '.jpg', '.jpeg')):
+        return Response({"success": False, 'error': 'Invalid file format. Only PNG, JPG, and JPEG are allowed.'})
+
+    user = request.user
+    user.photo = file
+    user.save()
+
+    return Response({"success": True, "data": {"photo": user.photo.url}})
