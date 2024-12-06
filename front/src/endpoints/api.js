@@ -5,6 +5,7 @@ const API_URL = 'https://localhost/api/'
 const ACCOUNT_URL = `${API_URL}accounts/`
 const AUTH_URL = `${API_URL}auth/`
 const FRIENDS_URL = `${API_URL}friends/`
+const DFA_URL = `${API_URL}dfa/`
 
 const api =
 {
@@ -14,7 +15,8 @@ const api =
         DELETE: `${ACCOUNT_URL}delete/`,
         DATA: `${ACCOUNT_URL}data/`,
         PROFILE: `${ACCOUNT_URL}profile/`,
-        UPLOAD_PHOTO: `${ACCOUNT_URL}upload_profile_photo/`
+        UPLOAD_PHOTO: `${ACCOUNT_URL}upload_profile_photo/`,
+        EDIT: `${ACCOUNT_URL}edit/`
     },
     AUTH:
     {
@@ -29,6 +31,11 @@ const api =
         LIST: `${FRIENDS_URL}list/`,
         SEARCH: `${FRIENDS_URL}search/`,
         REQUESTS: `${FRIENDS_URL}requests/`
+    },
+    DFA:
+    {
+        SEND_EMAIL: `${DFA_URL}send_email/`,
+        ACTIVATE: `${DFA_URL}activate/`
     }
 }
 
@@ -165,5 +172,26 @@ export const uploadProfilePhoto = async (data) =>
 {
     return await requestWithTokenRefresh(() =>
         axios.put(api.ACCOUNT.UPLOAD_PHOTO, data, { withCredentials: true }).then(res => res.data)
+    )
+}
+
+export const editProfile = async (username) =>
+{
+    return await requestWithTokenRefresh(() =>
+        axios.put(api.ACCOUNT.EDIT, { username }, { withCredentials: true }).then(res => res.data)
+    )
+}
+
+export const sendEmail2fa = async () =>
+{
+    return await requestWithTokenRefresh(() =>
+        axios.post(api.DFA.SEND_EMAIL, {}, { withCredentials: true }).then(res => res.data)
+    )
+}
+
+export const activate2fa = async (code) =>
+{
+    return await requestWithTokenRefresh(() =>
+        axios.post(api.DFA.ACTIVATE, { code }, { withCredentials: true }).then(res => res.data)
     )
 }

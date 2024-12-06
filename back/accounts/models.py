@@ -54,7 +54,8 @@ class User(AbstractUser):
         #         code='invalid_password'
         #     )
         # ]
-    )
+    ),
+    two_factor_auth = models.BooleanField(default=False)
     friends = ManyToManyField(
         'self',
         symmetrical=True,

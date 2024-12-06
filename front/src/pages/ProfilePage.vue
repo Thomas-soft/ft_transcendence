@@ -62,11 +62,11 @@ const handleSendFriendAction = async (id, action) =>
     await accountsStore.send_friend_action(id, action)
 }
 
-const handleEdit = (e) =>
+const handleEdit = async (e) =>
 {
     e.preventDefault()
     edit.value = !edit.value
-    console.log(username.value, email.value)
+    await selfStore.edit_profile(username.value)
 }
 
 const handleChange = (e, id, element, pattern) =>
@@ -154,11 +154,11 @@ const handleImageUpload = async () =>
             <div v-else>
                 <form @submit="handleEdit">
                     <label for="username">Username</label>
-                    <input type="text" name="username" id="username" @change="handleUsername" autocomplete="username">
+                    <input type="text" name="username" id="username" @change="handleUsername" autocomplete="username" :value="selfStore.user_data?.username">
                     <p class="form-error" id="username-error">{{ config.regex.username.description }}</p>
-                    <label for="email">Email</label>
+                    <!-- <label for="email">Email</label>
                     <input type="email" name="email" id="email" @change="handleEmail" autocomplete="email">
-                    <p class="form-error" id="email-error">{{ config.regex.email.description }}</p>
+                    <p class="form-error" id="email-error">{{ config.regex.email.description }}</p> -->
                     <div class="buttons">
                         <button type="button" @click="edit = !edit">Cancel</button>
                         <button type="submit">Save</button>

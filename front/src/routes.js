@@ -4,6 +4,7 @@ import RegisterPage from "./pages/RegisterPage.vue";
 import LoginPage from "./pages/LoginPage.vue";
 import ProfilePage from "./pages/ProfilePage.vue";
 import FriendsPage from "./pages/FriendsPage.vue";
+import SettingsPage from "./pages/SettingsPage.vue";
 
 export const routes = [
     {path: "/:pathMatch(.*)*", component: ErrorPage},
@@ -12,4 +13,5 @@ export const routes = [
     {path: '/login', component: LoginPage},
     {path: "/profile/:username", component: ProfilePage},
     {path: "/friends", component: FriendsPage},
+    {path: "/settings", component: SettingsPage},
 ]

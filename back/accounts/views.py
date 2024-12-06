@@ -53,6 +53,7 @@ def get_data(request):
             "photo": me.photo.url,
             "username": me.username,
             "email": me.email,
+            "two_factor_auth": me.two_factor_auth,
         }
     }
     return Response(res)
